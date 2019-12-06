@@ -1,16 +1,31 @@
-import React, { useCallback } from 'react';
-import { goBack } from 'connected-react-router';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+// import { goBack } from 'connected-react-router';
+// import { useDispatch } from 'react-redux';
+
+import usersApi from '../../services/ramdom';
+import useMount from '../../hooks/useMount';
 
 const Ramdom = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const handleGoback = useCallback(() => dispatch(goBack()), [dispatch]);
+  // const handleGoback = useCallback(() => dispatch(goBack()), [dispatch]);
+  const [users, setUsers] = useState([]);
+
+  useMount(async () => {
+    const { data } = await usersApi().getUsers();
+
+    if (Array.isArray(data.results)) {
+      setUsers(data.results);
+    }
+  });
 
   return (
     <div>
-      <h1>Ramdoms Users</h1>
-      <button onClick={handleGoback}>Go Back</button>
+      <div>
+        {users.map(({ email }) => (
+          <p>{email}</p>
+        ))}
+      </div>
     </div>
   );
 };
