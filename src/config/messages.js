@@ -3,3 +3,7 @@ export const LEARN_REACT_MSG = 'Learn React';
 export const FETCH_TEXT_MSG = 'Fetch Text';
 export const FETCHING_MSG = 'Fetching...';
 export const ERROR_MSG = 'Oops! something went wrong';
+export const GO_BACK_MSG = 'Regresar al Inicio';
+export const SAVE_USER_MSG = 'Guardar';
+export const USERS_MSG = 'Users';
+export const DELETE_MSG = 'Eliminar';
