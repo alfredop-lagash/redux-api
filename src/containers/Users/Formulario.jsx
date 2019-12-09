@@ -1,33 +1,44 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable react/jsx-no-literals */
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import useForm from 'react-hook-form';
+import {
+  TextField,
+  Dialog,
+  IconButton,
+  DialogContent,
+  makeStyles,
+  Button,
+  DialogActions,
+  DialogTitle
+} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles(theme => ({
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    margin: 'auto',
-    width: 'fit-content'
-  },
-  formControl: {
-    marginTop: theme.spacing(2),
-    minWidth: 120
-  },
-  formControlLabel: {
-    marginTop: theme.spacing(1)
-  }
-}));
 
 const Formulario = ({ First, Last, Email }) => {
+  const { register, handleSubmit, errors } = useForm({
+    defaultValues: {
+      FirstName: `${First}`,
+      LastName: `${Last}`,
+      Email: `${Email}`
+    }
+  });
+  const onSubmit = data => {
+    console.log(data);
+  };
+
+  const useStyles = makeStyles(theme => ({
+    form: {
+      display: 'flex',
+      flexDirection: 'column',
+      margin: 'auto',
+      width: 'fit-content'
+    },
+    formControl: {
+      marginTop: theme.spacing(2),
+      minWidth: 120
+    },
+    formControlLabel: {
+      marginTop: theme.spacing(1)
+    }
+  }));
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -39,60 +50,71 @@ const Formulario = ({ First, Last, Email }) => {
     setOpen(false);
   };
 
+  const handleCloseSuccessful = () => {
+    if (!(errors.FirstName || errors.LastName || errors.Email)) {
+      setOpen(false);
+    }
+  };
+
   return (
     <div className={classes.form}>
-      <IconButton aria-label='edit' color='primary' onClick={handleClickOpen}>
-        <EditIcon color='primary' />
+      <IconButton aria-label='edit' onClick={handleClickOpen} color='primary'>
+        <EditIcon />
       </IconButton>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby='form-dialog-title'
-      >
+      <Dialog open={open} aria-labelledby='form-dialog-title'>
         <DialogTitle id='form-dialog-title'>Edit User</DialogTitle>
-        <DialogContent>
-          <TextField
-            id='1'
-            label='First Name'
-            style={{ margin: 6 }}
-            fullWidth
-            margin='normal'
-            defaultValue={First}
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-          <TextField
-            id='2'
-            label='Last Name'
-            style={{ margin: 6 }}
-            fullWidth
-            margin='normal'
-            defaultValue={Last}
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-          <TextField
-            id='3'
-            label='Email'
-            style={{ margin: 6 }}
-            fullWidth
-            margin='normal'
-            defaultValue={Email}
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color='primary'>
-            Cancel
-          </Button>
-          <Button onClick={handleClose} color='primary'>
-            Save
-          </Button>
-        </DialogActions>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DialogContent>
+            <TextField
+              id='1'
+              label='First Name'
+              name='FirstName'
+              fullWidth
+              error={errors.FirstName && true}
+              helperText={errors.FirstName && errors.FirstName.message}
+              margin='normal'
+              inputRef={register({ required: 'This field is requred' })}
+            />
+            <TextField
+              id='2'
+              label='Last Name'
+              name='LastName'
+              fullWidth
+              error={errors.LastName && true}
+              helperText={errors.LastName && errors.LastName.message}
+              margin='normal'
+              inputRef={register({ required: 'This field is requred' })}
+            />
+            <TextField
+              id='3'
+              label='Email Name'
+              name='Email'
+              fullWidth
+              error={errors.Email && true}
+              helperText={errors.Email && errors.Email.message}
+              margin='normal'
+              inputRef={register({
+                required: 'This field is requred',
+                pattern: {
+                  value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
+                  message: 'Invalid email'
+                }
+              })}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              type='submit'
+              color='primary'
+              onClick={handleCloseSuccessful}
+            >
+              Save
+            </Button>
+            <Button onClick={handleClose} color='primary'>
+              Cancel
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   );

@@ -1,7 +1,5 @@
 /* eslint-disable react/jsx-no-literals */
 import React, { useState, useCallback } from 'react';
-// import { goBack } from 'connected-react-router';
-// import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -23,9 +21,6 @@ import { HOME } from '../../routes/paths';
 import Formulario from './Formulario';
 
 const Users = () => {
-  // const dispatch = useDispatch();
-
-  // const handleGoback = useCallback(() => dispatch(goBack()), [dispatch]);
   const [users, setUsers] = useState([]);
   const dispatch = useDispatch();
   const handleNavigate = useCallback(path => () => dispatch(push(path)), [
@@ -97,7 +92,6 @@ const Users = () => {
                   }
                 />
                 <Formulario
-                  className={classes.margin}
                   First={user.name.first}
                   Last={user.name.last}
                   Email={user.email}
