@@ -59,36 +59,39 @@ export default function App() {
               name='FirstName'
               style={{ margin: 6 }}
               fullWidth
+              error={errors.FirstName && true}
+              helperText={errors.FirstName && errors.FirstName.message}
               margin='normal'
               inputRef={register({ required: 'This field is requred' })}
             />
-            {errors.FirstName && errors.FirstName.message}
             <TextField
               id='2'
               label='Last Name'
               name='LastName'
               style={{ margin: 6 }}
               fullWidth
+              error={errors.LastName && true}
+              helperText={errors.LastName && errors.LastName.message}
               margin='normal'
               inputRef={register({ required: 'This field is requred' })}
             />
-            {errors.LastName && errors.LastName.message}
             <TextField
               id='3'
               label='Email Name'
               name='Email'
               style={{ margin: 6 }}
               fullWidth
+              error={errors.Email && true}
+              helperText={errors.Email && errors.Email.message}
               margin='normal'
               inputRef={register({
                 required: 'This field is requred',
                 pattern: {
-                  value: /[A-Za-z]{3}/,
+                  value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
                   message: 'Invalid email'
                 }
               })}
             />
-            {errors.Email && errors.Email.message}
           </DialogContent>
           <DialogActions>
             <Button type='submit' color='primary'>
