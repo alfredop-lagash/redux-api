@@ -10,8 +10,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import ReactDOM from 'react-dom';
-import useForm from 'react-hook-form';
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -30,11 +28,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Formulario = ({ First, Last, Email }) => {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = data => {
-    console.log(data);
-  };
-
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -58,38 +51,45 @@ const Formulario = ({ First, Last, Email }) => {
       >
         <DialogTitle id='form-dialog-title'>Edit User</DialogTitle>
         <DialogContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <TextField
-              id='1'
-              name='First Name'
-              style={{ margin: 6 }}
-              fullWidth
-              margin='normal'
-              ref={register}
-            />
-            <TextField
-              id='2'
-              name='Last Name'
-              style={{ margin: 6 }}
-              fullWidth
-              margin='normal'
-              ref={register}
-            />
-            <TextField
-              id='3'
-              name='Email'
-              style={{ margin: 6 }}
-              fullWidth
-              margin='normal'
-              ref={register}
-            />
-          </form>
+          <TextField
+            id='1'
+            label='First Name'
+            style={{ margin: 6 }}
+            fullWidth
+            margin='normal'
+            defaultValue={First}
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+          <TextField
+            id='2'
+            label='Last Name'
+            style={{ margin: 6 }}
+            fullWidth
+            margin='normal'
+            defaultValue={Last}
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+          <TextField
+            id='3'
+            label='Email'
+            style={{ margin: 6 }}
+            fullWidth
+            margin='normal'
+            defaultValue={Email}
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='primary'>
             Cancel
           </Button>
-          <Button type='submit' color='primary'>
+          <Button onClick={handleClose} color='primary'>
             Save
           </Button>
         </DialogActions>

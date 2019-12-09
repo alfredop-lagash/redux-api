@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   container: {
     backgroundColor: '#e5e4e4',
     minHeight: '100vh',
@@ -8,6 +8,9 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     justifyContent: 'center',
     color: '#FFF'
+  },
+  Button: {
+    margin: theme.spacing(1)
   }
 }));
 

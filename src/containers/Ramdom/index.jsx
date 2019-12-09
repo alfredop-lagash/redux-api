@@ -1,15 +1,34 @@
-import React, { useState } from 'react';
+/* eslint-disable react/jsx-no-literals */
+import React, { useState, useCallback } from 'react';
 // import { goBack } from 'connected-react-router';
 // import { useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import SaveIcon from '@material-ui/icons/Save';
+import Grid from '@material-ui/core/Grid';
+import HomeIcon from '@material-ui/icons/Home';
+import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
 
-import usersApi from '../../services/ramdom';
+import { HOME } from '../../routes/paths';
 import useMount from '../../hooks/useMount';
+import usersApi from '../../services/ramdom';
 
 const Ramdom = () => {
   // const dispatch = useDispatch();
 
   // const handleGoback = useCallback(() => dispatch(goBack()), [dispatch]);
   const [users, setUsers] = useState([]);
+  const dispatch = useDispatch();
+  const handleNavigate = useCallback(path => () => dispatch(push(path)), [
+    dispatch
+  ]);
 
   useMount(async () => {
     const { data } = await usersApi().getUsers();
@@ -19,13 +38,69 @@ const Ramdom = () => {
     }
   });
 
+  const useStyles = makeStyles(theme => ({
+    root: {
+      width: '100%',
+      backgroundColor: theme.palette.background.paper
+    },
+    inline: {
+      display: 'inline'
+    },
+    title: {
+      margin: theme.spacing(4, 4, 2)
+    },
+    Button: {
+      margin: theme.spacing(2)
+    }
+  }));
+
+  const classes = useStyles();
+
   return (
-    <div>
-      <div>
-        {users.map(({ email }) => (
-          <p>{email}</p>
-        ))}
-      </div>
+    <div className={classes.root}>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={12}>
+          <div>
+            <Typography variant='h4' className={classes.title}>
+              Random Users
+              <IconButton
+                aria-label='home'
+                className={classes.Button}
+                onClick={handleNavigate(HOME)}
+              >
+                <HomeIcon color='primary' />
+              </IconButton>
+            </Typography>
+          </div>
+          <List>
+            {users.map(user => (
+              <ListItem alignItems='flex-start' key={user.email}>
+                <ListItemAvatar>
+                  <Avatar src={user.picture.large} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${user.name.first} ${user.name.last}`}
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        component='span'
+                        variant='body2'
+                        className={classes.inline}
+                        color='textPrimary'
+                      >
+                        {user.email}
+                      </Typography>
+                    </React.Fragment>
+                  }
+                />
+                <IconButton aria-label='edit' className={classes.margin}>
+                  <SaveIcon color='primary' />
+                </IconButton>
+              </ListItem>
+            ))}
+          </List>
+        </Grid>
+      </Grid>
     </div>
   );
 };
